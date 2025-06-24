@@ -3,316 +3,419 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>她的选择 - 捞男游戏</title>
+    <title>她的选择 - 开始游戏</title>
     <meta name="description" content="一款以女性视角探讨情感博弈的互动故事游戏">
-    <meta name="keywords" content="互动故事,选择驱动,女性视角,情感博弈">
     
-    <!-- Favicon -->
-    <link rel="icon" type="image/x-icon" href="assets/images/favicon.ico">
-    
-    <!-- 关键CSS内联 -->
     <style>
-        /* 关键样式 - 优化首屏加载 */
-        body {
+        * {
             margin: 0;
             padding: 0;
-            font-family: 'Microsoft YaHei', 'PingFang SC', 'Hiragino Sans GB', 'SimSun', sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            min-height: 100vh;
-            overflow-x: hidden;
+            box-sizing: border-box;
         }
-        
-        .loading-screen {
-            position: fixed;
+
+        body {
+            font-family: 'Microsoft YaHei', 'PingFang SC', 'Hiragino Sans GB', 'SimSun', sans-serif;
+            height: 100vh;
+            overflow: hidden;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            position: relative;
+        }
+
+        /* 动态背景 */
+        .animated-background {
+            position: absolute;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            background: linear-gradient(135deg, #ff6b9d, #ffc3d2);
+            background: linear-gradient(135deg, #ff6b9d, #ffc3d2, #ff9a9e, #fecfef);
+            background-size: 400% 400%;
+            animation: gradientShift 8s ease infinite;
+            z-index: -2;
+        }
+
+        @keyframes gradientShift {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        /* 浮动粒子效果 */
+        .particles {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+        }
+
+        .particle {
+            position: absolute;
+            width: 4px;
+            height: 4px;
+            background: rgba(255, 255, 255, 0.6);
+            border-radius: 50%;
+            animation: float 6s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0px) rotate(0deg); opacity: 0; }
+            10% { opacity: 1; }
+            90% { opacity: 1; }
+            100% { transform: translateY(-100vh) rotate(360deg); opacity: 0; }
+        }
+
+        /* 主容器 */
+        .start-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            text-align: center;
+            position: relative;
+            z-index: 1;
+        }
+
+        /* 游戏标题 */
+        .game-logo {
+            margin-bottom: 3rem;
+            animation: fadeInDown 1.5s ease-out;
+        }
+
+        .game-title {
+            font-size: 4rem;
+            font-weight: 700;
+            color: white;
+            text-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+            margin-bottom: 1rem;
+            background: linear-gradient(45deg, #ffffff, #f8f9fa);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .game-subtitle {
+            font-size: 1.5rem;
+            color: rgba(255, 255, 255, 0.9);
+            text-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+            margin-bottom: 0.5rem;
+        }
+
+        .game-description {
+            font-size: 1rem;
+            color: rgba(255, 255, 255, 0.8);
+            max-width: 600px;
+            line-height: 1.6;
+            margin: 0 auto;
+        }
+
+        /* 开始按钮 */
+        .start-section {
+            margin-top: 4rem;
+            animation: fadeInUp 1.5s ease-out 0.5s both;
+        }
+
+        .start-button {
+            background: linear-gradient(135deg, #ff6b9d, #ff8a80);
+            color: white;
+            border: none;
+            padding: 1.5rem 4rem;
+            font-size: 1.5rem;
+            font-weight: 600;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 8px 30px rgba(255, 107, 157, 0.4);
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .start-button::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+            transition: left 0.5s;
+        }
+
+        .start-button:hover::before {
+            left: 100%;
+        }
+
+        .start-button:hover {
+            transform: translateY(-3px) scale(1.05);
+            box-shadow: 0 12px 40px rgba(255, 107, 157, 0.6);
+        }
+
+        .start-button:active {
+            transform: translateY(-1px) scale(1.02);
+        }
+
+        /* 音乐控制 */
+        .music-control {
+            position: fixed;
+            top: 2rem;
+            right: 2rem;
+            z-index: 100;
+            animation: fadeIn 2s ease-out 1s both;
+        }
+
+        .music-button {
+            background: rgba(255, 255, 255, 0.2);
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            color: white;
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            cursor: pointer;
+            font-size: 1.5rem;
             display: flex;
             align-items: center;
             justify-content: center;
-            z-index: 9999;
-            transition: opacity 0.5s ease;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(10px);
         }
-        
-        .loading-content {
-            text-align: center;
-            color: white;
+
+        .music-button:hover {
+            background: rgba(255, 255, 255, 0.3);
+            transform: scale(1.1);
         }
-        
-        .loading-spinner {
-            width: 50px;
-            height: 50px;
-            border: 4px solid rgba(255, 255, 255, 0.3);
-            border-top: 4px solid white;
-            border-radius: 50%;
-            animation: spin 1s linear infinite;
-            margin: 0 auto 1rem;
+
+        .music-button.playing {
+            animation: pulse 1.5s ease-in-out infinite;
         }
-        
-        @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.1); }
         }
-        
-        .game-container {
-            opacity: 0;
-            transition: opacity 0.5s ease;
+
+        /* 版本信息 */
+        .version-info {
+            position: fixed;
+            bottom: 2rem;
+            left: 2rem;
+            color: rgba(255, 255, 255, 0.7);
+            font-size: 0.9rem;
+            animation: fadeIn 2s ease-out 1.5s both;
         }
-        
-        .game-container.loaded {
-            opacity: 1;
+
+        /* 动画 */
+        @keyframes fadeInDown {
+            from {
+                opacity: 0;
+                transform: translateY(-50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        /* 响应式设计 */
+        @media (max-width: 768px) {
+            .game-title {
+                font-size: 2.5rem;
+            }
+            
+            .game-subtitle {
+                font-size: 1.2rem;
+            }
+            
+            .start-button {
+                padding: 1.2rem 3rem;
+                font-size: 1.2rem;
+            }
+            
+            .music-control {
+                top: 1rem;
+                right: 1rem;
+            }
+            
+            .music-button {
+                width: 50px;
+                height: 50px;
+                font-size: 1.2rem;
+            }
+            
+            .version-info {
+                bottom: 1rem;
+                left: 1rem;
+                font-size: 0.8rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .game-title {
+                font-size: 2rem;
+            }
+            
+            .game-subtitle {
+                font-size: 1rem;
+            }
+            
+            .game-description {
+                font-size: 0.9rem;
+                padding: 0 1rem;
+            }
+            
+            .start-button {
+                padding: 1rem 2.5rem;
+                font-size: 1rem;
+            }
         }
     </style>
-    
-    <!-- 完整样式文件 - 异步加载 -->
-    <link rel="preload" href="css/style.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
-    <noscript><link rel="stylesheet" href="css/style.css"></noscript>
-    
-    <!-- 字体加载失败时的fallback -->
-    <script>
-        // 确保CSS加载成功
-        setTimeout(() => {
-            const links = document.querySelectorAll('link[rel="preload"][as="style"]');
-            links.forEach(link => {
-                if (link.rel === 'preload') {
-                    link.rel = 'stylesheet';
-                }
-            });
-        }, 2000);
-    </script>
-    
-    <!-- 本地字体 - 无需外部依赖 -->
 </head>
 <body>
-    <!-- 游戏背景 -->
-    <div id="game-background" class="game-background"></div>
+    <!-- 动态背景 -->
+    <div class="animated-background"></div>
     
-    <!-- 游戏主容器 -->
-    <div class="game-container">
-        <!-- 游戏头部 -->
-        <header class="game-header">
-            <div class="header-content">
-                <h1 id="game-title" class="game-title">她的选择</h1>
-                <div class="game-controls">
-                    <button id="save-btn" class="control-btn tooltip">
-                        <span class="btn-icon">💾</span>
-                        <span class="btn-text">保存</span>
-                        <span class="tooltiptext">保存游戏</span>
-                    </button>
-                    <button id="load-btn" class="control-btn tooltip">
-                        <span class="btn-icon">📁</span>
-                        <span class="btn-text">加载</span>
-                        <span class="tooltiptext">加载游戏</span>
-                    </button>
-                    <button id="history-btn" class="control-btn tooltip">
-                        <span class="btn-icon">📖</span>
-                        <span class="btn-text">历史</span>
-                        <span class="tooltiptext">查看历史</span>
-                    </button>
-                    <button id="settings-btn" class="control-btn tooltip">
-                        <span class="btn-icon">⚙️</span>
-                        <span class="btn-text">设置</span>
-                        <span class="tooltiptext">游戏设置</span>
-                    </button>
-                </div>
-            </div>
-        </header>
+    <!-- 浮动粒子 -->
+    <div class="particles" id="particles"></div>
 
-        <!-- 游戏主体 -->
-        <main class="game-main">
-            <!-- 左侧面板 - 角色信息和统计 -->
-            <aside class="left-panel">
-                <div class="character-info">
-                    <div class="character-avatar-container">
-                        <div id="character-avatar" class="character-avatar">👩</div>
-                    </div>
-                    <h3 id="character-name" class="character-name">林晓雨</h3>
-                </div>
-                
-                <div id="stats-container" class="stats-container">
-                    <!-- 统计信息将通过JavaScript动态生成 -->
-                </div>
-            </aside>
-
-            <!-- 中间面板 - 故事内容 -->
-            <section class="center-panel">
-                <div class="story-container">
-                    <div id="story-text" class="story-text">
-                        正在加载游戏...
-                    </div>
-                </div>
-                
-                <div id="choices-container" class="choices-container">
-                    <!-- 选择项将通过JavaScript动态生成 -->
-                </div>
-            </section>
-
-            <!-- 右侧面板 - 游戏信息 -->
-            <aside class="right-panel">
-                <div class="game-info">
-                    <h3>游戏信息</h3>
-                    <div class="info-item">
-                        <span class="info-label">当前章节:</span>
-                        <span id="current-chapter" class="info-value">第一章</span>
-                    </div>
-                    <div class="info-item">
-                        <span class="info-label">游戏进度:</span>
-                        <div class="progress-bar">
-                            <div id="progress-fill" class="progress-fill" style="width: 12.5%"></div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="game-tips">
-                    <h4>游戏提示</h4>
-                    <ul class="tips-list">
-                        <li>每个选择都会影响你的属性和人际关系</li>
-                        <li>注意观察男性角色的言行举止</li>
-                        <li>相信女性同伴的建议和警告</li>
-                        <li>保持独立思考，不要被甜言蜜语迷惑</li>
-                        <li>游戏会自动保存你的进度</li>
-                    </ul>
-                </div>
-            </aside>
-        </main>
-
-        <!-- 游戏底部 -->
-        <footer class="game-footer">
-            <div class="footer-content">
-                <p>&copy; 2024 她的选择 - 捞男游戏 | 一款探讨情感智慧的互动故事游戏</p>
-                <div class="social-links">
-                    <a href="#" class="social-link tooltip">
-                        💬
-                        <span class="tooltiptext">分享到微信</span>
-                    </a>
-                    <a href="#" class="social-link tooltip">
-                        📱
-                        <span class="tooltiptext">分享到微博</span>
-                    </a>
-                    <a href="#" class="social-link tooltip">
-                        📧
-                        <span class="tooltiptext">反馈建议</span>
-                    </a>
-                </div>
-            </div>
-        </footer>
+    <!-- 音乐控制 -->
+    <div class="music-control">
+        <button class="music-button" id="musicToggle" title="背景音乐">
+            🎵
+        </button>
     </div>
 
-    <!-- 加载提示 -->
-    <div id="loading-screen" class="loading-screen">
-        <div class="loading-content">
-            <div class="loading-spinner"></div>
-            <h2>她的选择</h2>
-            <p>正在加载游戏...</p>
+    <!-- 版本信息 -->
+    <div class="version-info">
+        版本 1.0.0 | © 2024 她的选择
+    </div>
+
+    <!-- 主容器 -->
+    <div class="start-container">
+        <div class="game-logo">
+            <h1 class="game-title">她的选择</h1>
+            <h2 class="game-subtitle">捞男游戏</h2>
+            <p class="game-description">
+                在这个充满挑战的都市生活中，作为一名独立女性，你将面临各种选择。
+                每一个决定都将影响你的人生轨迹，学会识别和应对生活中的"捞男"，
+                建立真正的女性友谊，追求属于自己的幸福人生。
+            </p>
+        </div>
+        
+        <div class="start-section">
+            <button class="start-button" id="startGame">
+                开始游戏
+            </button>
         </div>
     </div>
 
-    <!-- 脚本文件 -->
-    <script src="js/story.js"></script>
-    <script src="js/game.js"></script>
-    <script src="js/ui.js"></script>
+    <!-- 背景音乐 -->
+    <audio id="backgroundMusic" loop preload="auto">
+        <source src="assets/audio/background.mp3" type="audio/mpeg">
+        <source src="assets/audio/background.ogg" type="audio/ogg">
+        您的浏览器不支持音频播放。
+    </audio>
 
-    <!-- 错误处理和初始化 -->
     <script>
-        // 错误处理
-        window.addEventListener('error', function(e) {
-            console.error('JavaScript错误:', e.error);
-            const storyText = document.getElementById('story-text');
-            if (storyText) {
-                storyText.innerHTML = `
-                    <div style="color: red; padding: 20px; text-align: center;">
-                        <h3>游戏加载出现问题</h3>
-                        <p>错误信息: ${e.error?.message || '未知错误'}</p>
-                        <p>请刷新页面重试，或检查浏览器控制台获取详细信息。</p>
-                        <button onclick="location.reload()" style="padding: 10px 20px; background: #ff6b9d; color: white; border: none; border-radius: 5px; cursor: pointer;">
-                            刷新页面
-                        </button>
-                    </div>
-                `;
+        // 粒子系统
+        function createParticles() {
+            const particles = document.getElementById('particles');
+            const particleCount = 50;
+            
+            for (let i = 0; i < particleCount; i++) {
+                const particle = document.createElement('div');
+                particle.className = 'particle';
+                particle.style.left = Math.random() * 100 + '%';
+                particle.style.animationDelay = Math.random() * 6 + 's';
+                particle.style.animationDuration = (Math.random() * 3 + 3) + 's';
+                particles.appendChild(particle);
+            }
+        }
+
+        // 音乐控制
+        const backgroundMusic = document.getElementById('backgroundMusic');
+        const musicToggle = document.getElementById('musicToggle');
+        let isPlaying = false;
+
+        musicToggle.addEventListener('click', () => {
+            if (isPlaying) {
+                backgroundMusic.pause();
+                musicToggle.textContent = '🎵';
+                musicToggle.classList.remove('playing');
+                isPlaying = false;
+            } else {
+                backgroundMusic.play().catch(e => {
+                    console.log('音频播放失败:', e);
+                });
+                musicToggle.textContent = '🔊';
+                musicToggle.classList.add('playing');
+                isPlaying = true;
             }
         });
 
-        // 加载完成后隐藏加载屏幕 - 优化加载时间
-        window.addEventListener('load', function() {
-            // 检查游戏是否已初始化
-            const checkGameReady = () => {
-                if (window.game && window.game.story) {
-                    // 游戏已准备好，显示游戏容器并隐藏加载屏幕
-                    const gameContainer = document.querySelector('.game-container');
-                    const loadingScreen = document.getElementById('loading-screen');
-                    
-                    if (gameContainer) {
-                        gameContainer.classList.add('loaded');
-                    }
-                    
-                    if (loadingScreen) {
-                        loadingScreen.style.opacity = '0';
-                        setTimeout(() => {
-                            loadingScreen.style.display = 'none';
-                        }, 300);
-                    }
-                    
-                    // 记录总加载时间
-                    const totalTime = performance.now() - startTime;
-                    console.log(`游戏完全加载时间: ${totalTime.toFixed(2)}ms`);
-                } else {
-                    // 游戏还未准备好，继续等待
-                    setTimeout(checkGameReady, 100);
-                }
-            };
+        // 开始游戏按钮
+        const startButton = document.getElementById('startGame');
+        startButton.addEventListener('click', () => {
+            // 添加点击效果
+            startButton.style.transform = 'scale(0.95)';
             
-            // 最多等待3秒，然后强制隐藏加载屏幕
             setTimeout(() => {
-                const loadingScreen = document.getElementById('loading-screen');
-                if (loadingScreen && loadingScreen.style.display !== 'none') {
-                    loadingScreen.style.opacity = '0';
-                    setTimeout(() => {
-                        loadingScreen.style.display = 'none';
-                    }, 300);
-                }
-            }, 3000);
-            
-            // 开始检查游戏状态
-            setTimeout(checkGameReady, 500);
+                // 跳转到游戏页面
+                window.location.href = 'start.html';
+            }, 200);
         });
 
-        // 性能监控
-        const startTime = performance.now();
-        
-        // 检查游戏是否正常初始化
-        document.addEventListener('DOMContentLoaded', function() {
-            const domTime = performance.now();
-            console.log(`DOM加载时间: ${(domTime - startTime).toFixed(2)}ms`);
+        // 键盘事件
+        document.addEventListener('keydown', (e) => {
+            if (e.code === 'Space' || e.code === 'Enter') {
+                e.preventDefault();
+                startButton.click();
+            }
+            if (e.code === 'KeyM') {
+                musicToggle.click();
+            }
+        });
+
+        // 页面加载完成
+        document.addEventListener('DOMContentLoaded', () => {
+            createParticles();
+            
+            // 尝试自动播放背景音乐（某些浏览器可能会阻止）
             setTimeout(() => {
-                if (!window.game) {
-                    console.warn('游戏未正常初始化，尝试手动初始化...');
-                    try {
-                        if (typeof HerChoiceGame !== 'undefined') {
-                            window.game = new HerChoiceGame();
-                            console.log('手动初始化成功');
-                        } else {
-                            throw new Error('HerChoiceGame类未找到');
-                        }
-                    } catch (error) {
-                        console.error('手动初始化失败:', error);
-                        const storyText = document.getElementById('story-text');
-                        if (storyText) {
-                            storyText.innerHTML = `
-                                <div style="color: #666; padding: 20px; text-align: center;">
-                                    <h3>游戏初始化失败</h3>
-                                    <p>请检查网络连接或刷新页面重试</p>
-                                    <details style="margin-top: 10px;">
-                                        <summary>技术详情</summary>
-                                        <pre style="text-align: left; background: #f5f5f5; padding: 10px; border-radius: 5px; margin-top: 10px;">${error.message}</pre>
-                                    </details>
-                                </div>
-                            `;
-                        }
-                    }
-                }
-            }, 2000);
+                backgroundMusic.play().then(() => {
+                    musicToggle.textContent = '🔊';
+                    musicToggle.classList.add('playing');
+                    isPlaying = true;
+                }).catch(e => {
+                    console.log('自动播放被阻止，用户需要手动开启音乐');
+                });
+            }, 1000);
+        });
+
+        // 防止右键和F12
+        document.addEventListener('contextmenu', e => e.preventDefault());
+        document.addEventListener('keydown', e => {
+            if (e.key === 'F12' || (e.ctrlKey && e.shiftKey && e.key === 'I')) {
+                e.preventDefault();
+            }
         });
     </script>
 </body>
