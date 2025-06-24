@@ -986,6 +986,44 @@ class HerChoiceStory {
                     ]
                 },
                 {
+                    id: "scene_1_8b",
+                    title: "感谢的反思",
+                    background: "magazine_office",
+                    character: "narrator",
+                    text: "我真诚地对小丽说：'谢谢你的提醒，我会小心的。'她的话让我开始重新审视刚才在电梯里遇到的陈俊豪。他的确表现得过于主动，而且炫富的方式也很刻意。我暗自庆幸没有被他的表象迷惑。",
+                    choices: [
+                        {
+                            text: "询问更多防范技巧",
+                            effects: { wisdom: 25, colleague_xiaoli: 20, unity: 15 },
+                            nextScene: "scene_1_8a"
+                        },
+                        {
+                            text: "分享刚才的电梯遭遇",
+                            effects: { wisdom: 20, colleague_xiaoli: 25, unity: 20 },
+                            nextScene: "scene_1_13a"
+                        }
+                    ]
+                },
+                {
+                    id: "scene_1_8c",
+                    title: "天真的想法",
+                    background: "magazine_office",
+                    character: "colleague_xiaoli",
+                    text: "我有些不服气地说：'但是不能因为有坏人就否定所有男人吧？总有好人的。'小丽叹了口气，'晓雨，我不是让你对所有男人都有偏见，而是希望你能保护好自己。善良是美德，但盲目的善良就是愚蠢了。'",
+                    choices: [
+                        {
+                            text: "觉得她说得有道理",
+                            effects: { wisdom: 15, colleague_xiaoli: 10 },
+                            nextScene: "scene_1_8a"
+                        },
+                        {
+                            text: "还是觉得要相信人性",
+                            effects: { trust: 15, wisdom: -10, colleague_xiaoli: -10 },
+                            nextScene: "scene_1_9b"
+                        }
+                    ]
+                },
+                {
                     id: "scene_1_14a",
                     title: "第一章结语",
                     background: "magazine_office",

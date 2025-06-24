@@ -622,6 +622,77 @@ body {
     
     .left-panel, .right-panel {
         position: static;
+        order: 2;
+    }
+    
+    .center-panel {
+        order: 1;
+    }
+    
+    /* 移动端左侧面板优化 */
+    .left-panel {
+        padding: 1rem;
+        margin-bottom: 1rem;
+    }
+    
+    .character-info {
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+        margin-bottom: 1rem;
+    }
+    
+    .character-avatar-container {
+        width: 60px;
+        height: 60px;
+        flex-shrink: 0;
+    }
+    
+    .character-name {
+        font-size: 1.2rem;
+        margin: 0;
+    }
+    
+    /* 移动端统计信息优化 */
+    .stats-container {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 1rem;
+    }
+    
+    .stats-section, .relationships-section {
+        background: rgba(255, 255, 255, 0.8);
+        border-radius: 10px;
+        padding: 1rem;
+    }
+    
+    .stats-section h3, .relationships-section h3 {
+        font-size: 1rem;
+        margin-bottom: 0.8rem;
+    }
+    
+    .stat-item, .relationship-item {
+        margin-bottom: 0.5rem;
+        font-size: 0.85rem;
+    }
+    
+    .stat-bar, .relationship-bar {
+        height: 6px;
+        margin: 0.3rem 0;
+    }
+    
+    /* 移动端右侧面板优化 */
+    .right-panel {
+        padding: 1rem;
+        margin-top: 1rem;
+    }
+    
+    .game-info, .game-tips {
+        margin-bottom: 1rem;
+    }
+    
+    .game-tips {
+        display: none; /* 移动端隐藏提示信息节省空间 */
     }
     
     .header-content {
@@ -659,16 +730,52 @@ body {
     }
     
     .left-panel, .center-panel, .right-panel {
-        padding: 1.5rem;
+        padding: 1rem;
+    }
+    
+    /* 小屏幕统计信息进一步优化 */
+    .stats-container {
+        grid-template-columns: 1fr;
+        gap: 0.5rem;
+    }
+    
+    .character-info {
+        flex-direction: column;
+        text-align: center;
+        gap: 0.5rem;
+    }
+    
+    .character-avatar-container {
+        width: 50px;
+        height: 50px;
+        margin: 0 auto;
+    }
+    
+    .character-name {
+        font-size: 1.1rem;
+    }
+    
+    .stats-section, .relationships-section {
+        padding: 0.8rem;
+    }
+    
+    .stats-section h3, .relationships-section h3 {
+        font-size: 0.9rem;
+        margin-bottom: 0.5rem;
+    }
+    
+    .stat-item, .relationship-item {
+        font-size: 0.8rem;
+        margin-bottom: 0.3rem;
     }
     
     .story-text {
-        padding: 1.5rem;
+        padding: 1rem;
         font-size: 1rem;
     }
     
     .choice-btn {
-        padding: 1rem 1.5rem;
+        padding: 0.8rem 1.2rem;
         font-size: 0.9rem;
     }
     
@@ -678,7 +785,12 @@ body {
     }
     
     .modal-body {
-        padding: 1.5rem;
+        padding: 1rem;
+    }
+    
+    /* 隐藏右侧面板在小屏幕上 */
+    .right-panel {
+        display: none;
     }
 }
 
