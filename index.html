@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>她的选择 - 捞男游戏</title>
+    <meta name="description" content="一款以女性视角探讨情感博弈的互动故事游戏">
+    <meta name="keywords" content="互动故事,选择驱动,女性视角,情感博弈">
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/x-icon" href="assets/images/favicon.ico">
+    
+    <!-- 关键CSS内联 -->
+    <style>
+        /* 关键样式 - 优化首屏加载 */
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Microsoft YaHei', 'PingFang SC', 'Hiragino Sans GB', 'SimSun', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+        
+        .loading-screen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, #ff6b9d, #ffc3d2);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 9999;
+            transition: opacity 0.5s ease;
+        }
+        
+        .loading-content {
+            text-align: center;
+            color: white;
+        }
+        
+        .loading-spinner {
+            width: 50px;
+            height: 50px;
+            border: 4px solid rgba(255, 255, 255, 0.3);
+            border-top: 4px solid white;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 1rem;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        .game-container {
+            opacity: 0;
+            transition: opacity 0.5s ease;
+        }
+        
+        .game-container.loaded {
+            opacity: 1;
+        }
+    </style>
+    
+    <!-- 完整样式文件 - 异步加载 -->
+    <link rel="preload" href="css/style.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+    <noscript><link rel="stylesheet" href="css/style.css"></noscript>
+    
+    <!-- 字体加载失败时的fallback -->
+    <script>
+        // 确保CSS加载成功
+        setTimeout(() => {
+            const links = document.querySelectorAll('link[rel="preload"][as="style"]');
+            links.forEach(link => {
+                if (link.rel === 'preload') {
+                    link.rel = 'stylesheet';
+                }
+            });
+        }, 2000);
+    </script>
+    
+    <!-- 本地字体 - 无需外部依赖 -->
+</head>
+<body>
+    <!-- 游戏背景 -->
+    <div id="game-background" class="game-background"></div>
+    
+    <!-- 游戏主容器 -->
+    <div class="game-container">
+        <!-- 游戏头部 -->
+        <header class="game-header">
+            <div class="header-content">
+                <h1 id="game-title" class="game-title">她的选择</h1>
+                <div class="game-controls">
+                    <button id="save-btn" class="control-btn" title="保存游戏">
+                        <span class="btn-icon">💾</span>
+                        <span class="btn-text">保存</span>
+                    </button>
+                    <button id="load-btn" class="control-btn" title="加载游戏">
+                        <span class="btn-icon">📁</span>
+                        <span class="btn-text">加载</span>
+                    </button>
+                    <button id="history-btn" class="control-btn" title="查看历史">
+                        <span class="btn-icon">📖</span>
+                        <span class="btn-text">历史</span>
+                    </button>
+                    <button id="settings-btn" class="control-btn" title="游戏设置">
+                        <span class="btn-icon">⚙️</span>
+                        <span class="btn-text">设置</span>
+                    </button>
+                </div>
+            </div>
+        </header>
+
+        <!-- 游戏主体 -->
+        <main class="game-main">
+            <!-- 左侧面板 - 角色信息和统计 -->
+            <aside class="left-panel">
+                <div class="character-info">
+                    <div class="character-avatar-container">
+                        <div id="character-avatar" class="character-avatar">👩</div>
+                    </div>
+                    <h3 id="character-name" class="character-name">林晓雨</h3>
+                </div>
+                
+                <div id="stats-container" class="stats-container">
+                    <!-- 统计信息将通过JavaScript动态生成 -->
+                </div>
+            </aside>
+
+            <!-- 中间面板 - 故事内容 -->
+            <section class="center-panel">
+                <div class="story-container">
+                    <div id="story-text" class="story-text">
+                        正在加载游戏...
+                    </div>
+                </div>
+                
+                <div id="choices-container" class="choices-container">
+                    <!-- 选择项将通过JavaScript动态生成 -->
+                </div>
+            </section>
+
+            <!-- 右侧面板 - 游戏信息 -->
+            <aside class="right-panel">
+                <div class="game-info">
+                    <h3>游戏信息</h3>
+                    <div class="info-item">
+                        <span class="info-label">当前章节:</span>
+                        <span id="current-chapter" class="info-value">第一章</span>
+                    </div>
+                    <div class="info-item">
+                        <span class="info-label">游戏进度:</span>
+                        <div class="progress-bar">
+                            <div id="progress-fill" class="progress-fill" style="width: 12.5%"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="game-tips">
+                    <h4>游戏提示</h4>
+                    <ul class="tips-list">
+                        <li>每个选择都会影响你的属性和人际关系</li>
+                        <li>注意观察男性角色的言行举止</li>
+                        <li>相信女性同伴的建议和警告</li>
+                        <li>保持独立思考，不要被甜言蜜语迷惑</li>
+                        <li>游戏会自动保存你的进度</li>
+                    </ul>
+                </div>
+            </aside>
+        </main>
+
+        <!-- 游戏底部 -->
+        <footer class="game-footer">
+            <div class="footer-content">
+                <p>&copy; 2024 她的选择 - 捞男游戏 | 一款探讨情感智慧的互动故事游戏</p>
+                <div class="social-links">
+                    <a href="#" class="social-link" title="分享到微信">💬</a>
+                    <a href="#" class="social-link" title="分享到微博">📱</a>
+                    <a href="#" class="social-link" title="反馈建议">📧</a>
+                </div>
+            </div>
+        </footer>
+    </div>
+
+    <!-- 加载提示 -->
+    <div id="loading-screen" class="loading-screen">
+        <div class="loading-content">
+            <div class="loading-spinner"></div>
+            <h2>她的选择</h2>
+            <p>正在加载游戏...</p>
+        </div>
+    </div>
+
+    <!-- 脚本文件 -->
+    <script src="js/story.js"></script>
+    <script src="js/game.js"></script>
+    <script src="js/ui.js"></script>
+
+    <!-- 错误处理和初始化 -->
+    <script>
+        // 错误处理
+        window.addEventListener('error', function(e) {
+            console.error('JavaScript错误:', e.error);
+            const storyText = document.getElementById('story-text');
+            if (storyText) {
+                storyText.innerHTML = `
+                    <div style="color: red; padding: 20px; text-align: center;">
+                        <h3>游戏加载出现问题</h3>
+                        <p>错误信息: ${e.error?.message || '未知错误'}</p>
+                        <p>请刷新页面重试，或检查浏览器控制台获取详细信息。</p>
+                        <button onclick="location.reload()" style="padding: 10px 20px; background: #ff6b9d; color: white; border: none; border-radius: 5px; cursor: pointer;">
+                            刷新页面
+                        </button>
+                    </div>
+                `;
+            }
+        });
+
+        // 加载完成后隐藏加载屏幕 - 优化加载时间
+        window.addEventListener('load', function() {
+            // 检查游戏是否已初始化
+            const checkGameReady = () => {
+                if (window.game && window.game.story) {
+                    // 游戏已准备好，显示游戏容器并隐藏加载屏幕
+                    const gameContainer = document.querySelector('.game-container');
+                    const loadingScreen = document.getElementById('loading-screen');
+                    
+                    if (gameContainer) {
+                        gameContainer.classList.add('loaded');
+                    }
+                    
+                    if (loadingScreen) {
+                        loadingScreen.style.opacity = '0';
+                        setTimeout(() => {
+                            loadingScreen.style.display = 'none';
+                        }, 300);
+                    }
+                    
+                    // 记录总加载时间
+                    const totalTime = performance.now() - startTime;
+                    console.log(`游戏完全加载时间: ${totalTime.toFixed(2)}ms`);
+                } else {
+                    // 游戏还未准备好，继续等待
+                    setTimeout(checkGameReady, 100);
+                }
+            };
+            
+            // 最多等待3秒，然后强制隐藏加载屏幕
+            setTimeout(() => {
+                const loadingScreen = document.getElementById('loading-screen');
+                if (loadingScreen && loadingScreen.style.display !== 'none') {
+                    loadingScreen.style.opacity = '0';
+                    setTimeout(() => {
+                        loadingScreen.style.display = 'none';
+                    }, 300);
+                }
+            }, 3000);
+            
+            // 开始检查游戏状态
+            setTimeout(checkGameReady, 500);
+        });
+
+        // 性能监控
+        const startTime = performance.now();
+        
+        // 检查游戏是否正常初始化
+        document.addEventListener('DOMContentLoaded', function() {
+            const domTime = performance.now();
+            console.log(`DOM加载时间: ${(domTime - startTime).toFixed(2)}ms`);
+            setTimeout(() => {
+                if (!window.game) {
+                    console.warn('游戏未正常初始化，尝试手动初始化...');
+                    try {
+                        if (typeof HerChoiceGame !== 'undefined') {
+                            window.game = new HerChoiceGame();
+                            console.log('手动初始化成功');
+                        } else {
+                            throw new Error('HerChoiceGame类未找到');
+                        }
+                    } catch (error) {
+                        console.error('手动初始化失败:', error);
+                        const storyText = document.getElementById('story-text');
+                        if (storyText) {
+                            storyText.innerHTML = `
+                                <div style="color: #666; padding: 20px; text-align: center;">
+                                    <h3>游戏初始化失败</h3>
+                                    <p>请检查网络连接或刷新页面重试</p>
+                                    <details style="margin-top: 10px;">
+                                        <summary>技术详情</summary>
+                                        <pre style="text-align: left; background: #f5f5f5; padding: 10px; border-radius: 5px; margin-top: 10px;">${error.message}</pre>
+                                    </details>
+                                </div>
+                            `;
+                        }
+                    }
+                }
+            }, 2000);
+        });
+    </script>
+</body>
+</html> 
