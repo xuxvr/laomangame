@@ -682,6 +682,72 @@ body {
     }
 }
 
+/* 自定义Tooltip样式 */
+.tooltip {
+    position: relative;
+    display: inline-block;
+}
+
+.tooltip .tooltiptext {
+    visibility: hidden;
+    width: 120px;
+    background-color: rgba(0, 0, 0, 0.9);
+    color: #fff;
+    text-align: center;
+    border-radius: 6px;
+    padding: 8px 12px;
+    position: absolute;
+    z-index: 1000;
+    bottom: 125%;
+    left: 50%;
+    margin-left: -60px;
+    opacity: 0;
+    transition: opacity 0.3s, visibility 0.3s;
+    font-size: 0.8rem;
+    font-weight: normal;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+}
+
+.tooltip .tooltiptext::after {
+    content: "";
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    margin-left: -5px;
+    border-width: 5px;
+    border-style: solid;
+    border-color: rgba(0, 0, 0, 0.9) transparent transparent transparent;
+}
+
+.tooltip:hover .tooltiptext {
+    visibility: visible;
+    opacity: 1;
+}
+
+/* 控制按钮tooltip位置调整 */
+.control-btn.tooltip .tooltiptext {
+    bottom: 125%;
+    left: 50%;
+    margin-left: -60px;
+}
+
+/* 社交链接tooltip位置调整 */
+.social-link.tooltip .tooltiptext {
+    bottom: 125%;
+    left: 50%;
+    margin-left: -60px;
+}
+
+/* 移动端tooltip调整 */
+@media (max-width: 968px) {
+    .tooltip .tooltiptext {
+        width: 100px;
+        margin-left: -50px;
+        font-size: 0.7rem;
+        padding: 6px 8px;
+    }
+}
+
 /* 打印样式 */
 @media print {
     .game-header, .game-footer, .left-panel, .right-panel, .choices-container {
@@ -696,5 +762,9 @@ body {
         background: white;
         box-shadow: none;
         border: 1px solid #ccc;
+    }
+    
+    .tooltip .tooltiptext {
+        display: none;
     }
 } 
